@@ -4,5 +4,5 @@ Creating desktops entrys in Ubuntu Linux always was something very boring for me
 
 ## Learning
 
-- [ ] HashMaps
-- [ ] LinkedList
+- [ ] HashMaps | Lack of tests.
+- [ ] LinkedList | Lack of tests.
