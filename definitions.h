@@ -1,0 +1,1 @@
+#define SHORT_OPTION_DELIMITER '\x2D'
