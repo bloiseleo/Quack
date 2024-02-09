@@ -1,8 +1,11 @@
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #define BASE_LENGTH 10;
 
 typedef struct QueueNode {
-	char* v;
+	char* value;
 	struct QueueNode* next;
 	struct QueueNode* before;
 } QueueNode;
@@ -21,26 +24,31 @@ Queue* queue() {
 	return q;
 }
 
-QueueNode* createNode(char* value, QueueNode* next, QueueNode* before) {
+QueueNode* createNodeQueue(char* value, QueueNode* next, QueueNode* before) {
 	QueueNode* qn = malloc(sizeof(QueueNode));
 	qn->value = strdup(value);
 	qn->next = next;
 	qn->before = before;
-	return qn
+	return qn;
 }
 
-void findLast(Queue* queue) {
+void printQueue(Queue* queue) {
+	if (queue->first == NULL) {
+		return;
+	}
 	QueueNode* n = queue->first;
 	QueueNode* next = n->next;
 	while(next != NULL) {
-		n = queue->next;
+		printf("%s", n->value);
+		n = n->next;
 		next = n->next;
 	}
+	printf("%s", n->value);
 	queue->last = n;
 }
 
 void enqueue(Queue* queue, char* value) {
-	QueueNode* node = createNode(value, NULL, NULL);
+	QueueNode* node = createNodeQueue(value, NULL, NULL);
 	if (queue->length == 0)  {
 		queue->first = node;
 		queue->last = queue->first;
@@ -54,8 +62,20 @@ void enqueue(Queue* queue, char* value) {
 	return;
 }
 
-void dequeue(Queue* queue) {
-	QueueNode* last = queue->last;
-
+char* dequeue(Queue* queue) {
+	QueueNode* first = queue->first;
+	char* v  = first->value;
+	if (first->next != NULL) {
+		first->next->before = NULL;
+	}
+	queue->first = first->next;
+	free(first);
+	return v;
 }
 
+char* pick(Queue *queue) {
+	if (queue->first) {
+		return queue->first->value;	
+	}
+	return NULL;
+}

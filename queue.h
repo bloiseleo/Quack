@@ -22,3 +22,11 @@ void printQueue(Queue* queue);
  * Enqueue a given value into the queue properly.
 */
 void enqueue(Queue* queue, char* value);
+/**
+ * Dequeue a given value from the queue properly.
+*/
+char* dequeue(Queue* queue);
+/**
+ * Pick a given value from the queue without removing it.
+*/
+char* pick(Queue* queue);
