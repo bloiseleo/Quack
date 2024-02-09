@@ -25,7 +25,6 @@ void parse(int c, char *v[])
         switch (opt) {
             case 'e':
                 char* p = getExecutablePath();
-                printf("%s", p);
                 break;
             default:
                 break;
