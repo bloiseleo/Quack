@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <linux/limits.h>
+#include "freedesktop.h"
 
-#define OPTIONS "e:"
+#define OPTIONS "n:"
+
 extern char *optarg;
 
 char* getExecutablePath()
@@ -17,14 +19,21 @@ char* getExecutablePath()
     return p;
 }
 
+void checkDesktopEntryName() {
+    if(!validConventionValueFormat(optarg)) {
+        fprintf(stderr, "%s is not a valid Desktop Entry Name. It must fullfill the regex ^[a-zA-z0-9_-]$\n", optarg);
+        exit(-1);
+    }
+}
+
 void parse(int c, char *v[])
 {
     int opt;
     while ((opt = getopt(c, v, OPTIONS)) != -1)
     {
         switch (opt) {
-            case 'e':
-                char* p = getExecutablePath();
+            case 'n':
+                checkDesktopEntryName();
                 break;
             default:
                 break;
