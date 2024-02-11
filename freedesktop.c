@@ -30,3 +30,13 @@ int checkVersionSyntax(char* s) {
     } 
     return 0;
 }
+
+int checkStringType(char* s, int size) {
+    for (int i = 0; i < size; i++) {
+        int c = (int) s[i];
+        if (c >= 0 && c <= 31 || c == 127) {
+            return 0;
+        }
+    }
+    return 1;
+}

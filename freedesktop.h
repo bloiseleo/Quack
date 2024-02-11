@@ -15,3 +15,7 @@ int validConventionValueFormat(char* value);
  * Examples: 1.2.3, 0.0.1, etc...
 */
 int checkVersionSyntax(char* s);
+/**
+ * Values of type string may contain all ASCII characters except for control characters. 
+*/
+int checkStringType(char* s, int size);
