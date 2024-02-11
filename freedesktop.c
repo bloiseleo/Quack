@@ -8,6 +8,22 @@ enum DesktopEntryTypes {
     DIRECTORY
 };
 
+char* entryTypeToStr(enum DesktopEntryTypes k) {
+    switch (k) {
+        case APPLICATION:
+            return "Application";
+            break;
+        case LINK:
+            return "Link";
+            break;
+        case DIRECTORY:
+            return "Directory";
+            break;
+        default:
+            break;
+    }
+}
+
 int validConventionValueFormat(char* value) {
     for (int i = 0; i < strlen(value); i++) {
         char c = value[i];

@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
+#include <string.h>
 #include "filesystem.h"
 
-void generateEntry(Options* o) {
+char* generateFolderInLocal() {
     char* userpath = getenv("HOME");
     char* pathToLocal = join(2, userpath, ".local");
     createDirIfNotExists(pathToLocal);
@@ -11,6 +12,19 @@ void generateEntry(Options* o) {
     createDirIfNotExists(pathToShare);
     char* pathToApp = join(2, pathToShare, "applications");
     createDirIfNotExists(pathToApp);
+    return pathToApp;
+}
+
+void generateEntry(Options* o) {
+    char* path = generateFolderInLocal();
+    char* pathToDesktopEntry = join(2, path, o->name);
+    char buff[strlen(pathToDesktopEntry) + 7];
+    sprintf(buff, "%s.desktop", pathToDesktopEntry);
+    FILE* fp = fopen(buff, "w");
+    fprintf(fp, "[Desktop Entry]\n");
+    fprintf(fp, "Type=%s\n", entryTypeToStr(o->kind));
+    fprintf(fp, "Name=%s", o->name);
+    fclose(fp);
 }
 
 int main(int argc, char *argv[]) {

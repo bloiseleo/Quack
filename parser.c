@@ -116,5 +116,13 @@ Options* parse(int c, char *v[])
                 break;
         }
     }
+    if (o->kind == NULL) {
+        printf("Type must be provided to generate a Desktop Entry");
+        exit(-1);
+    }
+    if (o->name == NULL) {
+        printf("Name must be provided to generate a Desktop Entry");
+        exit(-1);
+    }
     return o;
 }

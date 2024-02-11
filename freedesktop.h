@@ -19,3 +19,7 @@ int checkVersionSyntax(char* s);
  * Values of type string may contain all ASCII characters except for control characters. 
 */
 int checkStringType(char* s, int size);
+/**
+ * Transform a given enum DesktopEntryTypes into a String.
+*/
+char* entryTypeToStr(enum DesktopEntryTypes k);
