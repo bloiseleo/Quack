@@ -12,3 +12,5 @@ typedef struct {
 } Options;
 
 Options* parse(int c, char *v[]);
+
+char* error(char* er);

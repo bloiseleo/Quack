@@ -29,6 +29,7 @@ void generateEntry(Options* o) {
 
 int main(int argc, char *argv[]) {
     Options* options = parse(argc, argv);
-    generateEntry(options);
+    // generateEntry(options);
+    // return 0;
     return 0;
 }
