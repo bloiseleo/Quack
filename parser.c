@@ -5,7 +5,7 @@
 #include "freedesktop.h"
 #include <stdlib.h>
 
-#define OPTIONS "n:aldv:g:c:e:h:i:"
+#define OPTIONS "n:aldv:g:c:e:hi:f:"
 
 extern char *optarg;
 
@@ -18,6 +18,7 @@ typedef struct {
     char* comment;
     char* iconPath;
     char* executable;
+    char* filename;
 } Options;
 
 void concatInBuffer(char* buffer, size_t bufferSize, char* s) {
@@ -42,6 +43,7 @@ char* help() {
     concatInBuffer(buffer, strlen(buffer), "    -c: Tooltip for the entry. It will be shown if your entry is used to open other files, like \"Open HTML in Firefox\".\n");
     concatInBuffer(buffer, strlen(buffer), "    -i: Determines the absolute path to Icon to be shown in Search Bar. If relative path is provided, full absolute path is processed from it.\n");
     concatInBuffer(buffer, strlen(buffer), "    -e: Determines the absolute path to Executable File to be executed. If relative path is provided, full absolute path is processed from it. It must be informed when Application type\n");
+    concatInBuffer(buffer, strlen(buffer), "    -f: Determines the name of the Desktop Entry File to be used. If none is provided, the name of application will be used\n");
     return strdup(buffer);
 }
 
@@ -65,6 +67,7 @@ Options* init() {
     o->comment = NULL;
     o->iconPath = NULL;
     o->executable = NULL;
+    o->filename = NULL;
     return o;
 }
 
@@ -75,13 +78,19 @@ void checkDestkopNameEntry() {
     }
 }
 
+void checkFilename() {
+    if(!checkStringType(optarg, strlen(optarg))) {
+        printf("%s - Desktop Entry Filename must not have control characteres", optarg);
+        exit(-1);
+    }
+}
+
 char* getExecutablePath()
 {
     char path[PATH_MAX + 1];
     char *p = realpath(optarg, path);
-    if (p == NULL) {
-        fprintf(stderr, "%s is not a valid path. %s", optarg, path);
-        exit(-1);
+    if (p == NULL) { // Not valid path, will be treated as executable in $PATH.
+        return strdup(optarg);
     }
     return p;
 }
@@ -147,16 +156,23 @@ Options* parse(int c, char *v[])
             case 'e':
                 o->executable = getExecutablePath();
                 break;
+            case 'f':
+                checkFilename();
+                o->filename = optarg;
+                break;
             default:
+                printf("%s", help());
+                exit(0);
                 break;
         }
     }
-    char* err = error("Type must be provided to generate a Desktop Entry");
+    if (o->name == NULL) {
+        char* err = error("Name must be provided to generate a Desktop Entry");
         printf("%s", err);
         exit(-1);
-    // if (o->name == NULL) {
-    //     printf("Name must be provided to generate a Desktop Entry");
-    //     exit(-1);
-    // }
+    }
+    if (o->filename == NULL) {
+        o->filename = o->name;
+    }    
     return o;
 }

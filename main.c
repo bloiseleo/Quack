@@ -17,19 +17,22 @@ char* generateFolderInLocal() {
 
 void generateEntry(Options* o) {
     char* path = generateFolderInLocal();
-    char* pathToDesktopEntry = join(2, path, o->name);
+    char* pathToDesktopEntry = join(2, path, o->filename);
     char buff[strlen(pathToDesktopEntry) + 7];
     sprintf(buff, "%s.desktop", pathToDesktopEntry);
     FILE* fp = fopen(buff, "w");
     fprintf(fp, "[Desktop Entry]\n");
     fprintf(fp, "Type=%s\n", entryTypeToStr(o->kind));
-    fprintf(fp, "Name=%s", o->name);
+    fprintf(fp, "Name=%s\n", o->name);
+    if (o->executable != NULL) {
+        fprintf(fp, "Exec=%s", o->executable);
+    }
+    
     fclose(fp);
 }
 
 int main(int argc, char *argv[]) {
     Options* options = parse(argc, argv);
-    // generateEntry(options);
-    // return 0;
+    generateEntry(options);
     return 0;
 }

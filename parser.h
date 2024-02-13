@@ -9,6 +9,7 @@ typedef struct {
     char* comment;
     char* iconPath;
     char* executable;
+    char* filename;
 } Options;
 
 Options* parse(int c, char *v[]);
