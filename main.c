@@ -24,6 +24,15 @@ void generateEntry(Options* o) {
     fprintf(fp, "[Desktop Entry]\n");
     fprintf(fp, "Type=%s\n", entryTypeToStr(o->kind));
     fprintf(fp, "Name=%s\n", o->name);
+    if (o->comment != NULL) {
+        fprintf(fp, "Comment=%s\n", o->comment);
+    }
+    if (o->genericName != NULL) {
+        fprintf(fp, "GenericName=%s\n", o->genericName);
+    }
+    if (o->version != NULL) {
+        fprintf(fp, "Version=%s\n", o->version);
+    }
     if (o->executable != NULL) {
         fprintf(fp, "Exec=%s\n", o->executable);
     }
