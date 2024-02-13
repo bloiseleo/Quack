@@ -47,3 +47,17 @@ int createDirIfNotExists(char* path) {
     return res == 0 ? 1: 0;
 }
 
+int validExecutable(char* executable) {
+    char* paths = getenv("PATH");
+    char* p = strtok(paths, ":");
+    int exec = 0;
+    while (p != NULL) {
+        char* joined = join(2, p, executable);
+        p = strtok(NULL, ":");
+        struct stat stats;
+        if(stat(joined, &stats) == 0 && stats.st_mode & S_IXUSR) {
+            exec = 1;
+        }
+    }
+    return exec;
+}

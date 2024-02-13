@@ -25,9 +25,11 @@ void generateEntry(Options* o) {
     fprintf(fp, "Type=%s\n", entryTypeToStr(o->kind));
     fprintf(fp, "Name=%s\n", o->name);
     if (o->executable != NULL) {
-        fprintf(fp, "Exec=%s", o->executable);
+        fprintf(fp, "Exec=%s\n", o->executable);
     }
-    
+    if (o->iconPath != NULL) {
+        fprintf(fp, "Icon=%s\n", o->iconPath);
+    }
     fclose(fp);
 }
 
