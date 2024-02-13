@@ -46,13 +46,13 @@ char* help() {
 }
 
 char* error(char* er) {
-    char* buffer = malloc(sizeof(char) * strlen("Error: "));
+    char* def = "Type quack -h to get more information\n";
+    char* buffer = malloc(sizeof(char) * strlen("Error: ") + 1);
     strcat(buffer, "Error: ");
     concatInBuffer(buffer, strlen(buffer), er);
-    concatInBuffer(buffer, strlen(buffer), "\n\n");
-    char* h = help();
-    concatInBuffer(buffer, strlen(buffer), h);
-    return h;
+    concatInBuffer(buffer, strlen(buffer), "\n");
+    concatInBuffer(buffer, strlen(buffer), def);
+    return buffer;
 }
 
 Options* init() {
@@ -151,11 +151,9 @@ Options* parse(int c, char *v[])
                 break;
         }
     }
-    if (o->kind == NULL) {
-        char* err = error("Type must be provided to generate a Desktop Entry");
+    char* err = error("Type must be provided to generate a Desktop Entry");
         printf("%s", err);
         exit(-1);
-    }
     // if (o->name == NULL) {
     //     printf("Name must be provided to generate a Desktop Entry");
     //     exit(-1);
