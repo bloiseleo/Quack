@@ -3,6 +3,7 @@
 #include <string.h>
 #include <linux/limits.h>
 #include "freedesktop.h"
+#include "filesystem.h"
 #include <stdlib.h>
 
 #define OPTIONS "n:aldv:g:c:e:hi:f:"
@@ -54,7 +55,8 @@ char* error(char* er) {
     concatInBuffer(buffer, strlen(buffer), er);
     concatInBuffer(buffer, strlen(buffer), "\n");
     concatInBuffer(buffer, strlen(buffer), def);
-    return buffer;
+    printf("%s", buffer);
+    exit(-1);
 }
 
 Options* init() {
@@ -90,7 +92,10 @@ char* getExecutablePath()
     char path[PATH_MAX + 1];
     char *p = realpath(optarg, path);
     if (p == NULL) { // Not valid path, will be treated as executable in $PATH.
-        return strdup(optarg);
+        if (validExecutable(optarg)) {
+            return strdup(optarg);
+        }
+        error("Executable not valid as an absolute path neither executable from $PATH");
     }
     return p;
 }
@@ -167,9 +172,7 @@ Options* parse(int c, char *v[])
         }
     }
     if (o->name == NULL) {
-        char* err = error("Name must be provided to generate a Desktop Entry");
-        printf("%s", err);
-        exit(-1);
+        error("Name must be provided to generate a Desktop Entry");
     }
     if (o->filename == NULL) {
         o->filename = o->name;
